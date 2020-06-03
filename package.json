@@ -1,0 +1,14 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "description": "Proyecto primer bimestre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Karla Moyón",
+  "license": "ISC",
+  "dependencies": {
+    "flask": "^0.2.10"
+  }
+}
