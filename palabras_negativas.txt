@@ -1,8 +1,4 @@
 Necesidad
-Casos
-contacto
-Transmisión
-contacto
 Tristeza
 Melancolía
 Abandono
@@ -13,16 +9,13 @@ Desmotivación
 Asustado
 Amargura
 Angustia
-cadáveres
 Agresión
 Agobio
 Ansiedad
 Asco
-Irregularidades
 Vacilación
 Fastidio
 Venganza
-Importados
 Vergüenza
 Vacío
 Hastió

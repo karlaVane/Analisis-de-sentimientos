@@ -1,0 +1,40 @@
+{%extends "layout.html" %} {% block content %}
+<div class="container">
+    <br>
+    <h2>Análisis de sentimientos</h2>
+
+    <h5>Realizar el análisis con similitud de:</h5>
+    <div class="custom-control custom-radio">
+        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+        <label class="custom-control-label" for="customRadio1">Coseno</label>
+    </div>
+    <div class="custom-control custom-radio">
+        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+        <label class="custom-control-label" for="customRadio2">Jaccard</label>
+    </div>
+    <br>
+    <center>
+        <button type="button" class="btn btn-primary">Aceptar</button></center>
+
+    <hr>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col"> FECHA</th>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">TWEET</th>
+                <th scope="col">Coseno</th>
+                <th scope="col">Jaccard</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tweet %}
+            <tr>
+                <td> {{t[0]}}</td>
+                <td>{{t[1]}}</td>
+                <td>{{t[2]}}</td>{% endfor%}
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

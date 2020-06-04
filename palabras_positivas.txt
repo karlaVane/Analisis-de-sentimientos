@@ -5,9 +5,8 @@ Asombroso
 Bien 
 Bueno
 Bravo
-Brillante
+Brillante 
 Creativo 
-Controlar
 Correcto 
 Chévere
 chulería 
@@ -431,12 +430,9 @@ reorganizar
 magníficos
 reactivar
 reactivación
-vivos
-defensa
+vivos 
 recuperados
-campeones
 ayuda
-fomentar
 donaciones
 voluntaria
 motivada
@@ -446,7 +442,6 @@ tranquilidad
 desinfección
 ganancias
 inmune
-seguridad
 relajamiento
 más 
 destacadas
@@ -464,5 +459,4 @@ salud
 garantiza
 protección
 sorprende
-campeones
 reiniciará

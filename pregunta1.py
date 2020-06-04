@@ -2,50 +2,21 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import nltk
 from unicodedata import normalize
+from generarTweets import generarTweet
 import tweepy
 import unidecode
 import math
 import re
+nltk.download('stopwords')##Descargar el nltk
 stemmer = PorterStemmer()  ##Cargar el stemmer
-
-consumer_key = "bACQ2drpynaMBberGMJ7kRQDU"
-consumer_secret = "ZKYRlIaBiA2ieTLQrV0zu2b1YuzEvzMooL1Rjye9Vv5HXiUFAg"
-access_token = "810912048943157248-qjellrxYIqOqqJQXN9MRWJ6GSQeIFpD"
-access_token_secret = "AB7lcwlV4xP7CFuXMZOr04ed8yvGnwAfSWZoupqRuHFZY"
-auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
-auth.set_access_token(access_token,access_token_secret)
-
-api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
-places = api.geo_search(query="ECU", granularity="country")
-place = places[0]
-date_since = "2020-05-31"
-date_until = "2020-06-2"
-
-tw1,tw2,tw_res=([] for e in range(3))
-
-cont=0
-contar=0
-for tweet in tweepy.Cursor(api.search, q="covid-19 en %s -filter:retweets" %place.name, lang="es", since=date_since, until=date_until, tweet_mode='extended').items(5):
-    dic1 = tweet._json["created_at"]
-    dic2 = tweet._json["user"]
-    dic3 = tweet._json["full_text"] ##o de esta manera print(tweet.full_text)
-    n = unidecode.unidecode(dic2["name"])
-    d = unidecode.unidecode(dic3).replace('\n', ' ')#Remplaza todas los caracteres especiales
-    dsinlinks = re.sub(r'http\S+', '', d)
-    dsinarroba = re.sub(r'@+', '', dsinlinks)
-    dsinslash = re.sub('[^A-Za-z0-9]+', ' ',dsinarroba)
-    if dsinslash not in tw1:
-        tw1.append(dsinslash)
-        contar=+contar+1
-    else:
-        cont=+cont+1
-    
-
-print("Cadenas No Iguales: ",contar)
-print("Cadenas Iguales: ",cont)
-print("-----------------------------------------")
-
-
+tw1=[]
+consulta="coronavirus"    #la consulta que se realizara a la API de tweeter
+cantidadTweets = 5   #La cantidad de tweets que se consultaran
+date_since = "2020-05-29"   #fecha hasta
+date_until = "2020-06-03"   #fecha desde, OJO--> coge tweets de un dia menos
+datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
+for i in datos:
+    tw1.append(i[2])
 ################################FUNCIONES DEL COSENO####################################################
 def calpeso(valor): 
     if (valor)>0:
@@ -121,7 +92,7 @@ def diccionario (diccionario):
     return dic    
 
 posi=diccionario("palabras_positivas.txt")#se almacena el diccionario de palabras positivas.(lista)
-negativa=diccionario("pnegativas.txt")#se almacena el diccionario de palabras neg.(lista)
+negativa=diccionario("palabras_negativas.txt")#se almacena el diccionario de palabras neg.(lista)
 
 posi.sort(key=str.lower) #ordeno alfabeticamente
 negativa.sort(key=str.lower) #ordeno alfabeticamente
@@ -131,7 +102,6 @@ def limpieza(tw1,vocabulario):
     for e in range(len(tw1)):
         doc.append(re.sub('(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) | (\w +:\ / \ / \S +)', ' ', tw1[e].lower()).split()) 
     #hasta aqui esta tockenizado, minusculas y sin caracteres especiales
-    nltk.download('stopwords')##Descargar el nltk
     stop= stopwords.words('spanish')
     stopw=[]
     for e in range(len(doc)):

@@ -1,0 +1,44 @@
+body {
+    font-family: 'Rokkitt', serif;
+    font-size: 100%;
+    /*background-color: #F6F4B7;*/
+    background-color: white;
+    position: relative;
+    min-height: 100vh;
+}
+
+th {
+    text-align: center;
+}
+
+h2 {
+    color: #2A45C1;
+    text-align: center;
+}
+
+#subtitulos {
+    color: #F218BA;
+    font-size: 20px;
+}
+
+#subtitulos1 {
+    color: #238A0A;
+    font-size: 20px;
+}
+
+#subtitulos2 {
+    color: #9415E1;
+    font-size: 20px;
+}
+
+li {
+    font-size: 20px;
+}
+
+footer {
+    background-color: #232328;
+    color: white;
+    font-size: 100%;
+    padding: 5px;
+    text-align: center;
+}
