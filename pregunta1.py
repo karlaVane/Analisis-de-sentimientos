@@ -12,8 +12,8 @@ stemmer = PorterStemmer()  ##Cargar el stemmer
 tw1=[]
 consulta="coronavirus"    #la consulta que se realizara a la API de tweeter
 cantidadTweets = 5   #La cantidad de tweets que se consultaran
-date_since = "2020-05-29"   #fecha hasta
-date_until = "2020-06-03"   #fecha desde, OJO--> coge tweets de un dia menos
+date_since = "2020-06-01"   #fecha hasta
+date_until = "2020-06-07"   #fecha desde, OJO--> coge tweets de un dia menos
 datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
 for i in datos:
     tw1.append(i[2])
