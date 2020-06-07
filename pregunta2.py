@@ -166,8 +166,8 @@ def td_idf(stem,vocabulario):
             arreglo1.append(tf_idf[l][e])  # arreglo1:por documento, aun no en forma de lista
 
     for u in range(0, len(arreglo1), (len(vocabulario))):
-        arreglo2.append(arreglo1[u:u + (len(vocabulario))])  # peso por documento arreglado
-    return arreglo2
+        arreglo2.append(arreglo1[u:u + (len(vocabulario))])  # tf-idf por documento arreglado
+    return arreglo2 #devuelve por documento
 
 doc,vocabulario=vocabulario_1000(stopw_adic,tweet_s)
 
@@ -175,24 +175,28 @@ for e in range (len(doc)):
     datos.append([doc[e],sentimiento[e]])
 #print(len(datos))
 
-while(len(training) < 700): #El 70% para training datos = 1000
+while(len(training) < (len(doc)*0.7)): #El 70% para training, datos = 1000
     aux = random.choice(datos)
     if aux not in training:
         training.append(aux)
+        datos.remove(aux)
 
+"""
 for i in datos:
     if i not in training and i not in test:
         test.append(i)
+"""
+test=datos
 print("Training",len(training))
 print("Test",len(test))
 
 for t in training:
-    textoTrain.append(t[0])
-    senTrain.append(t[1])
+    textoTrain.append(t[0]) #X
+    senTrain.append(t[1])#Y
 
 for te in test:
-    textoTest.append(te[0])
-    senTest.append(te[1])
+    textoTest.append(te[0]) #X
+    senTest.append(te[1]) #solo para comparar
 
 tf_idf_train = td_idf(textoTrain,vocabulario)
 tf_id_test = td_idf(textoTest, vocabulario)
@@ -205,18 +209,33 @@ y_test = np.array(senTest)
 #print(x.shape)
 #print(x_test.shape)
 
-algoritmo = LogisticRegression()
+algoritmo = LogisticRegression()#Algoritmo de regresion
 
 #Entrana el modelo
 algoritmo.fit(x,y)#(x,y) el trainning
 
 y_pred = algoritmo.predict(x_test)#x_test
 print("Predicciones de Y utilizando X_TEST\n",y_pred)
-#print(len(y_pred))
 cont=0
 for e in range(len(y_pred)):
     if y_test[e] != y_pred[e]:
-        #print(y_test[e], " ", y_pred[e])
         cont =+ cont+1
 error = (cont/len(y_pred))*100
-print("Error: ", error,"%")
+
+print("Error: {0:.3f}".format(error),"%")
+
+cont_neg=0
+cont_posi=0
+for e in y_pred:
+    if (e=='-1'):
+        cont_neg+=1
+    else:
+        cont_posi+=1
+def porcentaje(contador,test):
+    porcen=(contador*100)/len(test)
+    return porcen
+
+print("Tweets Negativos: {0:.3f}".format(porcentaje(cont_neg,test)),"%")
+print("Tweets Positivos:{0:.3f}".format(porcentaje(cont_posi,test)),"%")
+
+ 
