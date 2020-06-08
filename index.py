@@ -1,6 +1,7 @@
 from flask import Flask, render_template,request
 from generarTweets import generarTweet
 from pregunta1 import resultadosPregunta1
+from pregunta3 import resultadoSPregunta3
 
 app= Flask(__name__)
 
@@ -29,9 +30,9 @@ def textblob():
         date_since=request.form['fechainicio']
         date_until=request.form['fechafinal']
         ######
-        datos, porcentaje_coseno, porcentaje_jaccard=resultadosPregunta1(consulta, cantidadTweets, date_since, date_until)
+        res_3=resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until)
         #####
-        return render_template('resultado3.html',tweet=datos,pc=porcentaje_coseno,pj=porcentaje_jaccard,con=consulta,inicio=date_since,final=date_until,cant_tw=cantidadTweets)
+        return render_template('resultado3.html',resultado=res_3,con=consulta,inicio=date_since,final=date_until,cant_tw=cantidadTweets)
     return render_template('tercera.html')
 
 if __name__ == '__main__':

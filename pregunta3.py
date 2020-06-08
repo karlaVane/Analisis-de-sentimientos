@@ -34,5 +34,14 @@ def resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until):
         sentimiento.append(analisisSentimientos(columna[2]))
         print([columna[2], analisisSentimientos(columna[2])])
     crearArchivo("Tweets con TextBlob", sentimiento, fecha, autor, texto)
-    return (fecha, autor, texto, sentimiento)
+    total1=[]
+    for i in range (len(texto)):
+        total=[]
+        total.append(fecha[i])
+        total.append(autor[i])
+        total.append(texto[i])
+        total.append(sentimiento[i])
+        total1.append(total)
+    return total1
+
 
