@@ -15,6 +15,7 @@ Ansiedad
 Asco
 Vacilación
 Fastidio
+afectados
 Venganza
 Vergüenza
 Vacío
@@ -382,6 +383,7 @@ Bruto
 incapaz 
 Indeseable
 nefasto
+muertes
 incoherente
 separado
 error
@@ -396,6 +398,7 @@ Desilusionado
 Tímido
 Equivocado
 flojo
+casos
 enojado
 aburrido
 feo
@@ -407,6 +410,7 @@ Descerebrado
 Malasangre
 Malparido
 Patán
+confirmados
 Sonso
 Zoquete
 Majadero
@@ -417,6 +421,7 @@ Concha
 Congestión
 Protestas
 Contagios
+Muertos
 Acusar
 Fallecidos
 Sospechoso
