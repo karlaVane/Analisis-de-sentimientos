@@ -9,14 +9,7 @@ import math
 import re
 nltk.download('stopwords')##Descargar el nltk
 stemmer = PorterStemmer()  ##Cargar el stemmer
-tw1=[]
-consulta="coronavirus"    #la consulta que se realizara a la API de tweeter
-cantidadTweets = 5   #La cantidad de tweets que se consultaran
-date_since = "2020-06-01"   #fecha hasta
-date_until = "2020-06-07"   #fecha desde, OJO--> coge tweets de un dia menos
-datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
-for i in datos:
-    tw1.append(i[2])
+
 ################################FUNCIONES DEL COSENO####################################################
 def calpeso(valor): 
     if (valor)>0:
@@ -64,9 +57,8 @@ def jac(a,b):
     d = (set(a) & set(b))
     jacc = len(d)/len(c)
     return jacc
-#######################################################################################
-punctuations = '''¡!()-[]{};:'"\<>./¿?@#$%^&*_~'''
-def diccionario (diccionario):
+
+def diccionario (diccionario, punctuations):
     pos=[]
     arr=[]
     f = open(diccionario, "r",encoding="utf8")
@@ -91,12 +83,6 @@ def diccionario (diccionario):
     f.close() 
     return dic    
 
-posi=diccionario("palabras_positivas.txt")#se almacena el diccionario de palabras positivas.(lista)
-negativa=diccionario("palabras_negativas.txt")#se almacena el diccionario de palabras neg.(lista)
-
-posi.sort(key=str.lower) #ordeno alfabeticamente
-negativa.sort(key=str.lower) #ordeno alfabeticamente
-####################################################
 def limpieza(tw1,vocabulario):
     doc=[]
     for e in range(len(tw1)):
@@ -118,7 +104,6 @@ def limpieza(tw1,vocabulario):
         stem.append(st) #documentos con stemming 
     stem.append(vocabulario)
     return stem
-
 
 def similitud(stem,vocabulario):  
     wtf=[]        
@@ -183,13 +168,7 @@ def similitud(stem,vocabulario):
     
     return res,res2
 
-tweets=limpieza(tw1,negativa)
-tweets2=limpieza(tw1,posi)
-neg_cos,neg_jaccard=similitud(tweets,negativa)
-pos_cos,pos_jaccard=similitud(tweets2,posi)
-
-########## comparar negativa, positiva
-def analisis(pos,neg):
+def analisis(pos,neg, tw1):
     mensaje=[]
     cont_p=0
     cont_n=0
@@ -210,22 +189,51 @@ def analisis(pos,neg):
         print(tw1[e],"--",mens,"\n")
     return cont_p,cont_n,cont_neutro,mensaje
 
-#######sacar porcentaje
 def porcentaje(contador,tw1):
     porcen=(contador*100)/len(tw1)
     return porcen
 
-print("Por coseno: ")
-cont_p,cont_n,cont_neutro,mensaje=analisis(pos_cos,neg_cos)
-print("\nTweets Positivos: ",porcentaje(cont_p,tw1),"%")
-print("Tweets Negativos: ",porcentaje(cont_n,tw1),"%")
-print("Tweets Neutros: ",porcentaje(cont_neutro,tw1),"%")
+def resultadosPregunta1(consulta, cantidadTweets, date_since, date_until):
+    tw1 = []
+    datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
+    for i in datos:
+        tw1.append(i[2])
+    punctuations = '''¡!()-[]{};:'"\<>./¿?@#$%^&*_~'''
+    posi = diccionario("palabras_positivas.txt", punctuations)  # se almacena el diccionario de palabras positivas.(lista)
+    negativa = diccionario("palabras_negativas.txt", punctuations)  # se almacena el diccionario de palabras neg.(lista)
+    posi.sort(key=str.lower)  # ordeno alfabeticamente
+    negativa.sort(key=str.lower)  # ordeno alfabeticamente
+    tweets = limpieza(tw1, negativa)
+    tweets2 = limpieza(tw1, posi)
+    neg_cos, neg_jaccard = similitud(tweets, negativa)
+    pos_cos, pos_jaccard = similitud(tweets2, posi)
 
-print("\nPor Jaccard")
-cont_pJ,cont_nJ,cont_neutroJ,mensajeJ=analisis(pos_jaccard,neg_jaccard)
-print("\nTweets Positivos: ",porcentaje(cont_pJ,tw1),"%")
-print("Tweets Negativos: ",porcentaje(cont_nJ,tw1),"%")
-print("Tweets Neutros: ",porcentaje(cont_neutroJ,tw1),"%")
+    print("Por coseno: ")
+    cont_p, cont_n, cont_neutro, mensaje = analisis(pos_cos, neg_cos, tw1)
 
-print("-------------------")
-print(mensaje)
+    print("\nTweets Positivos: ", porcentaje(cont_p, tw1), "%")
+    print("Tweets Negativos: ", porcentaje(cont_n, tw1), "%")
+    print("Tweets Neutros: ", porcentaje(cont_neutro, tw1), "%")
+
+    print("\nPor Jaccard")
+    cont_pJ, cont_nJ, cont_neutroJ, mensajeJ = analisis(pos_jaccard, neg_jaccard, tw1)
+
+    print("\nTweets Positivos: ", porcentaje(cont_pJ, tw1), "%")
+    print("Tweets Negativos: ", porcentaje(cont_nJ, tw1), "%")
+    print("Tweets Neutros: ", porcentaje(cont_neutroJ, tw1), "%")
+    print(mensaje)
+
+    porcentaje_coseno = []
+    porcentaje_coseno.append(porcentaje(cont_p, tw1))
+    porcentaje_coseno.append(porcentaje(cont_n, tw1))
+    porcentaje_coseno.append(porcentaje(cont_neutro, tw1))
+
+    porcentaje_jaccard = []
+    porcentaje_jaccard.append(porcentaje(cont_pJ, tw1))
+    porcentaje_jaccard.append(porcentaje(cont_nJ, tw1))
+    porcentaje_jaccard.append(porcentaje(cont_neutroJ, tw1))
+
+    for e in range(len(datos)):
+        datos[e].append(mensaje[e])
+        datos[e].append(mensajeJ[e])
+    return(datos, porcentaje_coseno, porcentaje_jaccard)
