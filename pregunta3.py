@@ -25,7 +25,6 @@ def crearArchivo(nombre_archivo,sentimiento,fecha,autor,texto):
 
 def resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until):
     datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
-
     fecha, autor, texto, sentimiento = ([] for i in range(4))
     print("[------------------TEXTO------------------, -----------------SENTIMIENTO----------------]")
     for columna in datos:
@@ -34,5 +33,6 @@ def resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until):
         texto.append(columna[2])
         sentimiento.append(analisisSentimientos(columna[2]))
         print([columna[2], analisisSentimientos(columna[2])])
+    crearArchivo("Tweets con TextBlob", sentimiento, fecha, autor, texto)
     return (fecha, autor, texto, sentimiento)
 
