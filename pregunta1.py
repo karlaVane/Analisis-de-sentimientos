@@ -190,6 +190,7 @@ pos_cos,pos_jaccard=similitud(tweets2,posi)
 
 ########## comparar negativa, positiva
 def analisis(pos,neg):
+    mensaje=[]
     cont_p=0
     cont_n=0
     cont_neutro=0
@@ -197,14 +198,17 @@ def analisis(pos,neg):
         if(pos[e]>neg[e]):
             cont_p+=1
             mens='Positivo'
+            mensaje.append('Positivo')
         elif(neg[e]>pos[e]):
             cont_n+=1
             mens='Negativo'
+            mensaje.append('Negativo')
         else:
             cont_neutro+=1
             mens='Neutro'
+            mensaje.append('Neutro')
         print(tw1[e],"--",mens,"\n")
-    return cont_p,cont_n,cont_neutro
+    return cont_p,cont_n,cont_neutro,mensaje
 
 #######sacar porcentaje
 def porcentaje(contador,tw1):
@@ -212,13 +216,16 @@ def porcentaje(contador,tw1):
     return porcen
 
 print("Por coseno: ")
-cont_p,cont_n,cont_neutro=analisis(pos_cos,neg_cos)
+cont_p,cont_n,cont_neutro,mensaje=analisis(pos_cos,neg_cos)
 print("\nTweets Positivos: ",porcentaje(cont_p,tw1),"%")
 print("Tweets Negativos: ",porcentaje(cont_n,tw1),"%")
 print("Tweets Neutros: ",porcentaje(cont_neutro,tw1),"%")
 
 print("\nPor Jaccard")
-cont_pJ,cont_nJ,cont_neutroJ=analisis(pos_jaccard,neg_jaccard)
+cont_pJ,cont_nJ,cont_neutroJ,mensajeJ=analisis(pos_jaccard,neg_jaccard)
 print("\nTweets Positivos: ",porcentaje(cont_pJ,tw1),"%")
 print("Tweets Negativos: ",porcentaje(cont_nJ,tw1),"%")
 print("Tweets Neutros: ",porcentaje(cont_neutroJ,tw1),"%")
+
+print("-------------------")
+print(mensaje)

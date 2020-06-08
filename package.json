@@ -9,6 +9,7 @@
   "author": "Karla Moyón",
   "license": "ISC",
   "dependencies": {
+    "bootstrap-input-spinner": "^1.13.8",
     "flask": "^0.2.10"
   }
 }

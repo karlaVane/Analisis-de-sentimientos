@@ -236,6 +236,4 @@ def porcentaje(contador,test):
     return porcen
 
 print("Tweets Negativos: {0:.3f}".format(porcentaje(cont_neg,test)),"%")
-print("Tweets Positivos:{0:.3f}".format(porcentaje(cont_posi,test)),"%")
-
- 
+print("Tweets Positivos:{0:.3f}".format(porcentaje(cont_posi,test)),"%") 

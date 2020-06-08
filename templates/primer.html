@@ -1,12 +1,13 @@
 {%extends "layout.html" %} {% block content %}
 <div class="container">
     <br>
-    <h2>Análisis de sentimientos</h2>
-
+    <b><h2>Análisis de sentimientos</h2></b> Consulta:
     <input type="text" name="consulta" id="consulta" placeholder="Inserte su consulta" required>
     <br>
+    <br> Cantidad de Tweets: <input type="number" id="cant" name="cant" value="1" min="0" max="1000" step="1" />
     <center>
-        <button type="button" class="btn btn-primary">Aceptar</button></center>
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+    </center>
 
     <hr>
     <table class="table">
@@ -24,9 +25,43 @@
             <tr>
                 <td> {{t[0]}}</td>
                 <td>{{t[1]}}</td>
-                <td>{{t[2]}}</td>{% endfor%}
-            </tr>
+                <td>{{t[2]}}</td>
+                <td>{{t[3]}}</td>
+                <td>{{t[4]}}</td>
+                {% endfor%}
         </tbody>
     </table>
+    <hr>
 </div>
-{% endblock %}
+<b><h2>Porcentaje de análisis</h2></b>
+<div class="main row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+        <table class="w3-table-all">
+            <tr class="w3-pink">
+                <th scope="col">Sentimientos</th>
+                <th scope="col">Coseno</th>
+                <th scope="col">Jaccard</th>
+            </tr>
+            <tr>
+                <td><b>Tweets Positivos:</b></td>
+                <td>{{pc[0]}} %</td>
+                <td>{{pj[0]}} %</td>
+            </tr>
+            <tr>
+                <td><b>Tweets Negativos:</b></td>
+                <td>{{pc[1]}} %</td>
+                <td>{{pj[1]}} %</td>
+            </tr>
+            <tr>
+                <td><b>Tweets Neutros:</b></td>
+                <td>{{pc[2]}} %</td>
+                <td>{{pj[2]}} %</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+<hr> {% endblock %}
