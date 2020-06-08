@@ -13,7 +13,7 @@ stemmer = PorterStemmer()  ##Cargar el stemmer
 ################################FUNCIONES DEL COSENO####################################################
 def calpeso(valor): 
     if (valor)>0:
-        peso =1+math.log10(valor);
+        peso =1+math.log10(valor)
     else: 
         peso= 0
     return peso
@@ -22,7 +22,7 @@ def idf(n,df):
     if(df==0):
         res=0
     else:
-        res=math.log10(n/df);
+        res=math.log10(n/df)
     return res
 
 def fun_normalizado(lista,mod):

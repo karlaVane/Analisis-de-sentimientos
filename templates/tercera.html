@@ -1,12 +1,12 @@
 {%extends "layout.html" %} {% block navbar %}
 <li class="nav-item active">
-    <a class="nav-link" href="#">Coseno/Jaccard <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="/">Coseno/Jaccard <span class="sr-only"></span></a>
 </li>
 <li>
-    <a class="nav-link" href="#"> Regresión <span class="sr-only"></span></a>
+    <a class="nav-link" href=""> Regresión <span class="sr-only"></span></a>
 </li>
 <li>
-    <a class="nav-link" href="preg3"> Librería <span class="sr-only"></span></a>
+    <a class="nav-link" href="#"> Librería <span class="sr-only">(current)</span></a>
 </li>
 {% endblock %} {% block content %}
 <div class="container">
@@ -14,7 +14,7 @@
     <b><h2>Análisis de sentimientos</h2></b>
     <h5><img src="/static/twitter.png" width="50" height="50"> La consulta de tweets se puede realizar hasta 7 días anteriores de la fecha actual. Las consultas son hechas en Ecuador</h5>
     <hr>
-    <form method="post" action="/">
+    <form method="post" action="/preg3">
         <img src="/static/lupa.png" width="30" height="30">Consulta: <input type="text" name="consulta" id="consulta" placeholder="Inserte su consulta" required></li>
         <ul>
             <br><br>

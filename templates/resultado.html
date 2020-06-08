@@ -1,21 +1,28 @@
 {%extends "layout.html" %} {% block content %}
 <div class="container">
     <br>
-    <b><h2>Análisis de sentimientos</h2></b> <br>
+    <b><h2>Análisis de sentimientos</h2></b>
+    <h5><img src="/static/twitter.png" width="50" height="50"> La consulta de tweets se puede realizar hasta 7 días anteriores de la fecha actual. Las consultas son hechas en Ecuador</h5>
+    <hr>
     <form method="post" action="/">
-        <input type="text" name="consulta" id="consulta" placeholder="Inserte su consulta" required>
-        <br>
-        <br> Cantidad de Tweets: <input type="number" id="cant" name="cant" value="1" min="0" max="1000" step="1" />
-        <br><br> Desde: <input type="date" name="fechainicio" min="2020-06-01" max="2020-06-07" step="1" />
-        <br><br> Hasta: <input type="date" name="fechafinal" min="2020-06-01" max="2020-06-07" step="1" />
+        <img src="/static/lupa.png" width="30" height="30">Consulta: <input type="text" name="consulta" id="consulta" placeholder="Inserte su consulta" required></li>
+        <ul>
+            <br><br>
+            <li>Cantidad de Tweets: <input type="number" id="cant" name="cant" value="1" min="0" max="1000" step="1" /></li>
+            <br><br>
+            <li>Desde: <input type="date" name="fechainicio" min="2020-06-01" max="2020-06-07" step="1" /></li>
+            <br><br>
+            <li>Hasta: <input type="date" name="fechafinal" min="2020-06-01" max="2020-06-07" step="1" /></li>
+        </ul>
         <center>
             <button type="submit" class="btn btn-primary">Aceptar</button>
         </center>
     </form>
     <hr>
-    <b>Consulta:</b> {{con}}<br>
+    <b>Consulta:</b> {{con}} en Ecuador<br>
     <b>Desde: </b>{{inicio}}<br>
     <b>Hasta: </b>{{final}}<br>
+    <b>Cantidad de tweets: </b>{{cant_tw}}<br>
     <hr>
     <!--aqui va el cod del bloc de notas-->
     <table class="table">

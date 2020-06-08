@@ -1,14 +1,4 @@
-{%extends "layout.html" %} {% block navbar %}
-<li class="nav-item active">
-    <a class="nav-link" href="#">Coseno/Jaccard <span class="sr-only">(current)</span></a>
-</li>
-<li>
-    <a class="nav-link" href="#"> Regresión <span class="sr-only"></span></a>
-</li>
-<li>
-    <a class="nav-link" href="preg3"> Librería <span class="sr-only"></span></a>
-</li>
-{% endblock %} {% block content %}
+{%extends "layout.html" %} {% block content %}
 <div class="container">
     <br>
     <b><h2>Análisis de sentimientos</h2></b>
@@ -29,5 +19,11 @@
         </center>
     </form>
     <hr>
+    <b>Consulta:</b> {{con}} en Ecuador<br>
+    <b>Desde: </b>{{inicio}}<br>
+    <b>Hasta: </b>{{final}}<br>
+    <b>Cantidad de tweets: </b>{{cant_tw}}<br>
+    <hr>
+
 </div>
 <hr> {% endblock %}
