@@ -22,7 +22,6 @@ def calpeso(valor):
         peso = 0
     return peso
 
-
 def idf(n, df):
     if (df == 0):
         res = 0
@@ -30,20 +29,17 @@ def idf(n, df):
         res = math.log10(n / df);
     return res
 
-
 def fun_normalizado(lista, mod):
     normalizado = []
     for i in lista:
         normalizado.append(i / mod)
     return normalizado
 
-
 def funtfIdf(lista, v_idf):
     tfIdf = []
     for i in lista:
         tfIdf.append(i * v_idf)
     return tfIdf
-
 
 def stop_adicionales(diccionario, punctuations):
     pos = []
@@ -69,7 +65,6 @@ def stop_adicionales(diccionario, punctuations):
             dic.append(word)  # verificación que no existan mismas palabras en el diccionario
     f.close()
     return dic
-
 
 def vocabulario_1000(stopw_a, documento):
     for e in range(len(documento)):
@@ -101,7 +96,6 @@ def vocabulario_1000(stopw_a, documento):
                 vocabulario.append(stemmer.stem(word))
         stem.append(st)  # documentos con stemming
     return stem, vocabulario
-
 
 def td_idf(stem, vocabulario):
     wtf = []
@@ -152,11 +146,9 @@ def td_idf(stem, vocabulario):
         arreglo2.append(arreglo1[u:u + (len(vocabulario))])  # tf-idf por documento arreglado
     return arreglo2  # devuelve por documento
 
-
 def porcentaje(contador, test):
     porcen = (contador * 100) / len(test)
     return porcen
-
 
 def resultadosPregunta2():
     start_time = time.time()
