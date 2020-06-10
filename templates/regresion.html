@@ -23,10 +23,10 @@
     <br>
     <b><h2>Análisis de sentimientos con Regresión Logística</h2></b>
     <h5>Predicción del análisis de sentimientos, teniendo como datos 1000 tweets <a href="https://github.com/karlaVane/Analisis-de-sentimientos/blob/master/Tweets.csv"><b>Ver Tweets</b></a>
-        <br> La Regresión logística utiliza:
+        <br> La Regresión logística utiliza:<br>
         <ul>
-            <li>Training el 70%</li>
-            <li>Test el 30%</li>
+            <li>Training el 70%: Cantidad de tweets: {{training}}</li>
+            <li>Test el 30%: Cantidad de tweets: {{test}}</li>
         </ul>
     </h5>
     <hr>
@@ -34,6 +34,7 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
+                <th scope="col"> #</th>
                 <th scope="col"> Texto</th>
                 <th scope="col">Análisis manual</th>
                 <th scope="col">Análisis Regresión</th>

@@ -7,6 +7,7 @@ import tweepy
 import unidecode
 import math
 import re
+import time
 nltk.download('stopwords')##Descargar el nltk
 stemmer = PorterStemmer()  ##Cargar el stemmer
 
@@ -194,6 +195,7 @@ def porcentaje(contador,tw1):
     return porcen
 
 def resultadosPregunta1(consulta, cantidadTweets, date_since, date_until):
+    start_time = time.time()
     tw1 = []
     datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
     for i in datos:
@@ -236,4 +238,7 @@ def resultadosPregunta1(consulta, cantidadTweets, date_since, date_until):
     for e in range(len(datos)):
         datos[e].append(mensaje[e])
         datos[e].append(mensajeJ[e])
-    return(datos, porcentaje_coseno, porcentaje_jaccard)
+    
+    end_time = time.time()
+    exe_time = round((end_time - start_time),2)
+    return(datos, porcentaje_coseno, porcentaje_jaccard,exe_time)

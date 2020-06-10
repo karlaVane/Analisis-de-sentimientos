@@ -3,6 +3,7 @@ from generarTweets import generarTweet
 import csv
 import unidecode
 import re
+import time
 
 def analisisSentimientos(corpus):
     analisis = TextBlob(corpus)
@@ -24,6 +25,7 @@ def crearArchivo(nombre_archivo,sentimiento,fecha,autor,texto):
 
 
 def resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until):
+    start_time = time.time()
     datos = generarTweet(consulta, cantidadTweets, date_since, date_until)
     fecha, autor, texto, sentimiento = ([] for i in range(4))
     print("[------------------TEXTO------------------, -----------------SENTIMIENTO----------------]")
@@ -42,6 +44,8 @@ def resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until):
         total.append(texto[i])
         total.append(sentimiento[i])
         total1.append(total)
-    return total1
+    end_time = time.time()
+    exe_time = round((end_time - start_time),2)
+    return total1,exe_time
 
 
