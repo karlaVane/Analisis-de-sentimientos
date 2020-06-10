@@ -11,6 +11,8 @@ from unicodedata import normalize
 from string import digits
 from sklearn.linear_model import LogisticRegression
 
+import random
+
 nltk.download('stopwords')  ##Descargar el nltk
 stemmer = PorterStemmer()  ##Cargar el stemmer
 
@@ -149,7 +151,7 @@ def td_idf(stem, vocabulario):
 def porcentaje(contador, test):
     porcen = (contador * 100) / len(test)
     return porcen
-
+####################################################
 def resultadosPregunta2():
     start_time = time.time()
     sentimiento_n, sentimiento_p, archivo, nuevo = ([] for i in range(4))
@@ -170,37 +172,40 @@ def resultadosPregunta2():
             nuevo.append([archivo[i][2], archivo[i][3]])
 
     # En nuevo estan los 1000 tweets con su sentimiento.
-    tweet_s, tweet, sentimiento, training, test, tweet_text, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(11))
+    tweet_s,sentimiento, training, test, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(9))
     for e in range(len(nuevo)):
-        tweet.append(nuevo[e][0])
         tweet_s.append(nuevo[e][0])
         sentimiento.append(nuevo[e][1])
     doc, vocabulario = vocabulario_1000(stopw_adic, tweet_s)
 
     for e in range(len(doc)):
         datos.append([doc[e], sentimiento[e]])
-    # print(len(datos))
 
-    while (len(training) < (len(doc) * 0.7)):  # El 70% para training, datos = 1000
-        # aux = random.choice(datos)
-        aux = random.randint(0, len(datos) - 1)
-        if datos[aux] not in training:
-            training.append(datos[aux])
-            tweet.remove(tweet[aux])
-            datos.remove(datos[aux])
-    """
-    while (len(test) < (len(doc) * 0.3)):
-        aux = random.randint(0,len(datos)-1)
-        if datos[aux] not in test:
-            test.append(datos[aux])
-            tweet_text.append(tweet[aux])
-            datos.remove(datos[aux])
-            print(len(test))
-    """
-    test = datos
-    tweet_text = tweet
-    # print(test)
-    # print(tweet_text[0])
+    posiciones_training=[]
+    posiciones_test=[]
+
+    while (len(posiciones_training) < (len(doc) * 0.7)):  # El 70% para training, datos = 1000
+        ran=random.randint(0,(len(datos)-1))
+        if(ran not in posiciones_training):
+            posiciones_training.append(ran)
+
+    while (len(posiciones_test) < (len(doc) * 0.3)):
+        ran2=random.randint(0, (len(datos)-1))
+        if (ran2 not in posiciones_training):
+            if(ran2 not in posiciones_test):
+                posiciones_test.append(ran2)
+
+    training=[]#texto stemming y sentimiento
+    test=[]#texto stemming y sentimiento
+    tweet_normal=[] #sin stemming
+
+    for e in range (len(posiciones_training)):
+        training.append([doc[posiciones_training[e]], sentimiento[posiciones_training[e]]])
+
+    for e in range (len(posiciones_test)):
+        test.append([doc[posiciones_test[e]], sentimiento[posiciones_test[e]]]) 
+        tweet_normal.append(nuevo[posiciones_test[e]])
+    
     print("Training", len(training))
     print("Test", len(test))
 
@@ -222,19 +227,16 @@ def resultadosPregunta2():
 
     # print(x.shape)
     # print(x_test.shape)
-
     algoritmo = LogisticRegression()  # Algoritmo de regresion
-
     # Entrana el modelo
     algoritmo.fit(x, y)  # (x,y) el trainning
-
     y_pred = algoritmo.predict(x_test)  # x_test
     print("Predicciones de Y utilizando X_TEST\n", y_pred)
     cont = 0
     for e in range(len(y_pred)):
         if y_test[e] != y_pred[e]:
             cont = + cont + 1
-    error = (cont / len(y_pred)) * 100
+    error = round(((cont / len(y_pred)) * 100),2)
     print("Error: {0:.3f}".format(error), "%")
     cont_neg = 0
     cont_posi = 0
@@ -243,15 +245,14 @@ def resultadosPregunta2():
             cont_neg += 1
         else:
             cont_posi += 1
-    neg = porcentaje(cont_neg, y_pred)
-    pos = porcentaje(cont_posi, y_pred)
+    neg = round(porcentaje(cont_neg, y_pred),2)
+    pos = round(porcentaje(cont_posi, y_pred),2)
     print("Tweets Negativos: {0:.3f}".format(neg), "%")
     print("Tweets Positivos:{0:.3f}".format(pos), "%")
     resultado = []
     for i in range(len(y_test)):
-        resultado.append([tweet_text[i], senTest[i], y_pred[i]])
+        resultado.append([tweet_normal[i], senTest[i], y_pred[i]])
     end_time = time.time()
-    exe_time = end_time - start_time
+    exe_time = round((end_time - start_time),2)
     print("Tiempo de Ejecucion: ", exe_time, "s")
-    # print(resultado)
     return (resultado, error, pos, neg, exe_time, len(training), len(test))

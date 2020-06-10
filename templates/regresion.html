@@ -34,7 +34,6 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col"> #</th>
                 <th scope="col"> Texto</th>
                 <th scope="col">Análisis manual</th>
                 <th scope="col">Análisis Regresión</th>
@@ -61,18 +60,20 @@
 <b><h2>Porcentaje de Resultados</h2></b>
 <div class="container">
     <table class="w3-table-all">
-        <tr class="w3-green">
-            <th scope="col">Error</th>
-            <th scope="col">Positivos</th>
-            <th scope="col">Negativos</th>
-            <th scope="col">Tiempo ejecución</th>
-        </tr>
-        <tr>
-            <td>{{error}} %</td>
-            <td>{{pos}} %</td>
-            <td>{{neg}} %</td>
-            <td>{{exe_time}} Segundos</td>
-        </tr>
+        <center>
+            <tr class="w3-green">
+                <th scope="col">Error</th>
+                <th scope="col">Positivos</th>
+                <th scope="col">Negativos</th>
+                <th scope="col">Tiempo ejecución</th>
+            </tr>
+            <tr>
+                <td>{{error}} %</td>
+                <td>{{pos}} %</td>
+                <td>{{neg}} %</td>
+                <td>{{exe_time}} Segundos</td>
+            </tr>
+        </center>
     </table>
 </div>
 <hr>
