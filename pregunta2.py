@@ -188,6 +188,15 @@ def resultadosPregunta2():
             training.append(datos[aux])
             tweet.remove(tweet[aux])
             datos.remove(datos[aux])
+    """
+    while (len(test) < (len(doc) * 0.3)):
+        aux = random.randint(0,len(datos)-1)
+        if datos[aux] not in test:
+            test.append(datos[aux])
+            tweet_text.append(tweet[aux])
+            datos.remove(datos[aux])
+            print(len(test))
+    """
     test = datos
     tweet_text = tweet
     # print(test)
@@ -240,7 +249,7 @@ def resultadosPregunta2():
     print("Tweets Positivos:{0:.3f}".format(pos), "%")
     resultado = []
     for i in range(len(y_test)):
-        resultado.append([tweet_text[i], y_test[i], y_pred[i]])
+        resultado.append([tweet_text[i], senTest[i], y_pred[i]])
     end_time = time.time()
     exe_time = end_time - start_time
     print("Tiempo de Ejecucion: ", exe_time, "s")
