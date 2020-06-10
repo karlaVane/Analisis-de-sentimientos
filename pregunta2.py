@@ -14,88 +14,96 @@ from sklearn.linear_model import LogisticRegression
 nltk.download('stopwords')  ##Descargar el nltk
 stemmer = PorterStemmer()  ##Cargar el stemmer
 
+
 def calpeso(valor):
-    if (valor)>0:
-        peso =1+math.log10(valor);
+    if (valor) > 0:
+        peso = 1 + math.log10(valor);
     else:
-        peso= 0
+        peso = 0
     return peso
 
-def idf(n,df):
-    if(df==0):
-        res=0
+
+def idf(n, df):
+    if (df == 0):
+        res = 0
     else:
-        res=math.log10(n/df);
+        res = math.log10(n / df);
     return res
 
-def fun_normalizado(lista,mod):
-    normalizado=[]
+
+def fun_normalizado(lista, mod):
+    normalizado = []
     for i in lista:
-        normalizado.append(i/mod)
+        normalizado.append(i / mod)
     return normalizado
 
-def funtfIdf(lista,v_idf):
-    tfIdf=[]
+
+def funtfIdf(lista, v_idf):
+    tfIdf = []
     for i in lista:
-        tfIdf.append(i*v_idf)
+        tfIdf.append(i * v_idf)
     return tfIdf
 
+
 def stop_adicionales(diccionario, punctuations):
-    pos=[]
-    arr=[]
-    f = open(diccionario, "r",encoding="utf8")
+    pos = []
+    arr = []
+    f = open(diccionario, "r", encoding="utf8")
     for linea in f.readlines():
-        linea=linea.strip()#quita \n y \t de los string
+        linea = linea.strip()  # quita \n y \t de los string
         no_punct = ""
-        for char in linea: #proceso para eliminar signos de pregunta y admiración
+        for char in linea:  # proceso para eliminar signos de pregunta y admiración
             if char not in punctuations:
                 no_punct = no_punct + char
-            linea=no_punct
-        linea = re.sub(r"([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+", r"\1", 
-                       normalize( "NFD", linea.lower()), 0, re.I)
-        linea = normalize( 'NFC', linea) #proceso para eliminar las tildes sin problema y no eliminar ñ
+            linea = no_punct
+        linea = re.sub(r"([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+", r"\1",
+                       normalize("NFD", linea.lower()), 0, re.I)
+        linea = normalize('NFC', linea)  # proceso para eliminar las tildes sin problema y no eliminar ñ
         pos.append(linea)
-        
+
     for word in pos:
-        arr.append(stemmer.stem(word))#proceso de stemming en el diccionario 
-    dic=[]
+        arr.append(stemmer.stem(word))  # proceso de stemming en el diccionario
+    dic = []
     for word in arr:
         if (word not in dic):
-            dic.append(word) #verificación que no existan mismas palabras en el diccionario
-    f.close() 
-    return dic   
+            dic.append(word)  # verificación que no existan mismas palabras en el diccionario
+    f.close()
+    return dic
 
-def vocabulario_1000(stopw_a,documento):
+
+def vocabulario_1000(stopw_a, documento):
     for e in range(len(documento)):
-        documento[e]= re.sub('(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) | (\w +:\ / \ / \S +)', ' ', documento[e].lower()).split() 
-    #hasta aqui esta tockenizado, minusculas y sin caracteres especiales
-    for e in range (len(documento)):
-        for i in range (len(documento[e])):
-            remove_digits =str.maketrans('', '', digits)
-            documento[e][i]=documento[e][i].translate(remove_digits )
-    stop= stopwords.words('spanish')    
-    for e in range (len(stopw_a)):
+        documento[e] = re.sub('(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) | (\w +:\ / \ / \S +)', ' ',
+                              documento[e].lower()).split()
+        # hasta aqui esta tockenizado, minusculas y sin caracteres especiales
+    for e in range(len(documento)):
+        for i in range(len(documento[e])):
+            remove_digits = str.maketrans('', '', digits)
+            documento[e][i] = documento[e][i].translate(remove_digits)
+    stop = stopwords.words('spanish')
+    for e in range(len(stopw_a)):
         stop.append(stopw_a[e])
-    stopw=[]
+    stopw = []
     for e in range(len(documento)):
         stopw.append([])
         for word in documento[e]:
             if word not in stop:
-                stopw[e].append(word) #eliminación de stopwords
-    documento=stopw
-    
-    stem=[]
-    vocabulario=[]
-    for k in range (len(documento)):
-        st=[]
+                stopw[e].append(word)  # eliminación de stopwords
+    documento = stopw
+
+    stem = []
+    vocabulario = []
+    for k in range(len(documento)):
+        st = []
         for word in documento[k]:
             st.append(stemmer.stem(word))
             if (stemmer.stem(word) not in vocabulario):
                 vocabulario.append(stemmer.stem(word))
-        stem.append(st) #documentos con stemming 
-    return stem,vocabulario
+        stem.append(st)  # documentos con stemming
+    return stem, vocabulario
 
-def td_idf(stem,vocabulario):
+
+def td_idf(stem, vocabulario):
     wtf = []
     for e in range(len(stem)):
         pesado = []
@@ -142,11 +150,13 @@ def td_idf(stem,vocabulario):
 
     for u in range(0, len(arreglo1), (len(vocabulario))):
         arreglo2.append(arreglo1[u:u + (len(vocabulario))])  # tf-idf por documento arreglado
-    return arreglo2 #devuelve por documento
+    return arreglo2  # devuelve por documento
 
-def porcentaje(contador,test):
-    porcen=(contador*100)/len(test)
+
+def porcentaje(contador, test):
+    porcen = (contador * 100) / len(test)
     return porcen
+
 
 def resultadosPregunta2():
     start_time = time.time()
@@ -168,8 +178,9 @@ def resultadosPregunta2():
             nuevo.append([archivo[i][2], archivo[i][3]])
 
     # En nuevo estan los 1000 tweets con su sentimiento.
-    tweet_s, index, sentimiento, training, test, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(10))
+    tweet_s, tweet, sentimiento, training, test, tweet_text, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(11))
     for e in range(len(nuevo)):
+        tweet.append(nuevo[e][0])
         tweet_s.append(nuevo[e][0])
         sentimiento.append(nuevo[e][1])
     doc, vocabulario = vocabulario_1000(stopw_adic, tweet_s)
@@ -179,13 +190,16 @@ def resultadosPregunta2():
     # print(len(datos))
 
     while (len(training) < (len(doc) * 0.7)):  # El 70% para training, datos = 1000
-        aux = random.choice(datos)
-        if aux not in training:
-            training.append(aux)
-            datos.remove(aux)
+        # aux = random.choice(datos)
+        aux = random.randint(0, len(datos) - 1)
+        if datos[aux] not in training:
+            training.append(datos[aux])
+            tweet.remove(tweet[aux])
+            datos.remove(datos[aux])
     test = datos
-    for ra in test:
-        index.append(test.index(ra))
+    tweet_text = tweet
+    # print(test)
+    # print(tweet_text[0])
     print("Training", len(training))
     print("Test", len(test))
 
@@ -232,12 +246,11 @@ def resultadosPregunta2():
     pos = porcentaje(cont_posi, y_pred)
     print("Tweets Negativos: {0:.3f}".format(neg), "%")
     print("Tweets Positivos:{0:.3f}".format(pos), "%")
-    resultado, texto_test = ([] for i in range(2))
-    for y in index:
-        texto_test.append(nuevo[y][0])
+    resultado = []
     for i in range(len(y_test)):
-        resultado.append([texto_test[i], y_test[i], y_pred[i]])
+        resultado.append([tweet_text[i], y_test[i], y_pred[i]])
     end_time = time.time()
-    exe_time = end_time-start_time
+    exe_time = end_time - start_time
     print("Tiempo de Ejecucion: ", exe_time, "s")
-    return(resultado, error, pos, neg, exe_time)
+    # print(resultado)
+    return (resultado, error, pos, neg, exe_time, len(training), len(test))
