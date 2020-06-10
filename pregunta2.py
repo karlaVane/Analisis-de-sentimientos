@@ -4,6 +4,7 @@ import nltk
 import random
 import math
 import numpy as np
+import time
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from unicodedata import normalize
@@ -12,8 +13,6 @@ from sklearn.linear_model import LogisticRegression
 
 nltk.download('stopwords')  ##Descargar el nltk
 stemmer = PorterStemmer()  ##Cargar el stemmer
-
-sentimiento_n, sentimiento_p, archivo, nuevo= ([] for i in range(4))
 
 def calpeso(valor):
     if (valor)>0:
@@ -41,8 +40,7 @@ def funtfIdf(lista,v_idf):
         tfIdf.append(i*v_idf)
     return tfIdf
 
-punctuations = '''¡!()-[]{};:'"\<>./¿?@#$%^&*_~'''
-def stop_adicionales(diccionario):
+def stop_adicionales(diccionario, punctuations):
     pos=[]
     arr=[]
     f = open(diccionario, "r",encoding="utf8")
@@ -66,28 +64,6 @@ def stop_adicionales(diccionario):
             dic.append(word) #verificación que no existan mismas palabras en el diccionario
     f.close() 
     return dic   
-
-stopw_adic=stop_adicionales("stopwords.txt")#Stopwords adicionales
-stopw_adic.sort(key=str.lower) #ordeno alfabeticamente
-
-f=  open("Tweets.csv", "r", encoding="utf8")
-reader = csv.reader(f)
-for row in reader:
-    archivo.append(row) 
-        
-for i in range(1,len(archivo)):
-    if (archivo[i][3] == "-1" and len(sentimiento_n) < 500):
-      sentimiento_n.append(archivo[i][3])
-      nuevo.append([archivo[i][2],archivo[i][3]])
-    elif (archivo[i][3] == "1" and len(sentimiento_p) < 500):
-        sentimiento_p.append(archivo[i][3])
-        nuevo.append([archivo[i][2],archivo[i][3]])
- 
-#En nuevo estan los 1000 tweets con su sentimiento.       
-tweet_s, sentimiento, training, test, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(9))
-for e in range (len(nuevo)):
-    tweet_s.append(nuevo[e][0])
-    sentimiento.append(nuevo[e][1])
 
 def vocabulario_1000(stopw_a,documento):
     for e in range(len(documento)):
@@ -118,7 +94,6 @@ def vocabulario_1000(stopw_a,documento):
                 vocabulario.append(stemmer.stem(word))
         stem.append(st) #documentos con stemming 
     return stem,vocabulario
-
 
 def td_idf(stem,vocabulario):
     wtf = []
@@ -169,71 +144,100 @@ def td_idf(stem,vocabulario):
         arreglo2.append(arreglo1[u:u + (len(vocabulario))])  # tf-idf por documento arreglado
     return arreglo2 #devuelve por documento
 
-doc,vocabulario=vocabulario_1000(stopw_adic,tweet_s)
-
-for e in range (len(doc)):
-    datos.append([doc[e],sentimiento[e]])
-#print(len(datos))
-
-while(len(training) < (len(doc)*0.7)): #El 70% para training, datos = 1000
-    aux = random.choice(datos)
-    if aux not in training:
-        training.append(aux)
-        datos.remove(aux)
-
-"""
-for i in datos:
-    if i not in training and i not in test:
-        test.append(i)
-"""
-test=datos
-print("Training",len(training))
-print("Test",len(test))
-
-for t in training:
-    textoTrain.append(t[0]) #X
-    senTrain.append(t[1])#Y
-
-for te in test:
-    textoTest.append(te[0]) #X
-    senTest.append(te[1]) #solo para comparar
-
-tf_idf_train = td_idf(textoTrain,vocabulario)
-tf_id_test = td_idf(textoTest, vocabulario)
-
-x = np.array(tf_idf_train)
-y = np.array(senTrain)
-x_test = np.array(tf_id_test)
-y_test = np.array(senTest)
-
-#print(x.shape)
-#print(x_test.shape)
-
-algoritmo = LogisticRegression()#Algoritmo de regresion
-
-#Entrana el modelo
-algoritmo.fit(x,y)#(x,y) el trainning
-
-y_pred = algoritmo.predict(x_test)#x_test
-print("Predicciones de Y utilizando X_TEST\n",y_pred)
-cont=0
-for e in range(len(y_pred)):
-    if y_test[e] != y_pred[e]:
-        cont =+ cont+1
-error = (cont/len(y_pred))*100
-
-print("Error: {0:.3f}".format(error),"%")
-
-cont_neg=0
-cont_posi=0
-for e in y_pred:
-    if (e=='-1'):
-        cont_neg+=1
-    else:
-        cont_posi+=1
 def porcentaje(contador,test):
     porcen=(contador*100)/len(test)
     return porcen
 
-print("Tweets Negativos: {0:.3f}".format(porcentaje(cont_neg,test)),"%")
-print("Tweets Positivos:{0:.3f}".format(porcentaje(cont_posi,test)),"%") 
+def resultadosPregunta2():
+    start_time = time.time()
+    sentimiento_n, sentimiento_p, archivo, nuevo = ([] for i in range(4))
+    punctuations = '''¡!()-[]{};:'"\<>./¿?@#$%^&*_~'''
+    stopw_adic = stop_adicionales("stopwords.txt", punctuations)  # Stopwords adicionales
+    stopw_adic.sort(key=str.lower)  # ordeno alfabeticamente
+    f = open("Tweets.csv", "r", encoding="utf8")
+    reader = csv.reader(f)
+    for row in reader:
+        archivo.append(row)
+
+    for i in range(1, len(archivo)):
+        if (archivo[i][3] == "-1" and len(sentimiento_n) < 500):
+            sentimiento_n.append(archivo[i][3])
+            nuevo.append([archivo[i][2], archivo[i][3]])
+        elif (archivo[i][3] == "1" and len(sentimiento_p) < 500):
+            sentimiento_p.append(archivo[i][3])
+            nuevo.append([archivo[i][2], archivo[i][3]])
+
+    # En nuevo estan los 1000 tweets con su sentimiento.
+    tweet_s, index, sentimiento, training, test, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(10))
+    for e in range(len(nuevo)):
+        tweet_s.append(nuevo[e][0])
+        sentimiento.append(nuevo[e][1])
+    doc, vocabulario = vocabulario_1000(stopw_adic, tweet_s)
+
+    for e in range(len(doc)):
+        datos.append([doc[e], sentimiento[e]])
+    # print(len(datos))
+
+    while (len(training) < (len(doc) * 0.7)):  # El 70% para training, datos = 1000
+        aux = random.choice(datos)
+        if aux not in training:
+            training.append(aux)
+            datos.remove(aux)
+    test = datos
+    for ra in test:
+        index.append(test.index(ra))
+    print("Training", len(training))
+    print("Test", len(test))
+
+    for t in training:
+        textoTrain.append(t[0])  # X
+        senTrain.append(t[1])  # Y
+
+    for te in test:
+        textoTest.append(te[0])  # X
+        senTest.append(te[1])  # solo para comparar
+
+    tf_idf_train = td_idf(textoTrain, vocabulario)
+    tf_id_test = td_idf(textoTest, vocabulario)
+
+    x = np.array(tf_idf_train)
+    y = np.array(senTrain)
+    x_test = np.array(tf_id_test)
+    y_test = np.array(senTest)
+
+    # print(x.shape)
+    # print(x_test.shape)
+
+    algoritmo = LogisticRegression()  # Algoritmo de regresion
+
+    # Entrana el modelo
+    algoritmo.fit(x, y)  # (x,y) el trainning
+
+    y_pred = algoritmo.predict(x_test)  # x_test
+    print("Predicciones de Y utilizando X_TEST\n", y_pred)
+    cont = 0
+    for e in range(len(y_pred)):
+        if y_test[e] != y_pred[e]:
+            cont = + cont + 1
+    error = (cont / len(y_pred)) * 100
+    print("Error: {0:.3f}".format(error), "%")
+    cont_neg = 0
+    cont_posi = 0
+    for e in y_pred:
+        if (e == '-1'):
+            cont_neg += 1
+        else:
+            cont_posi += 1
+    neg = porcentaje(cont_neg, y_pred)
+    pos = porcentaje(cont_posi, y_pred)
+    print("Tweets Negativos: {0:.3f}".format(neg), "%")
+    print("Tweets Positivos:{0:.3f}".format(pos), "%")
+    resultado, texto_test = ([] for i in range(2))
+    for y in index:
+        texto_test.append(nuevo[y][0])
+    for i in range(len(y_test)):
+        resultado.append([texto_test[i], y_test[i], y_pred[i]])
+    end_time = time.time()
+    exe_time = end_time-start_time
+    print("Tiempo de Ejecucion: ", exe_time, "s")
+    return(resultado, error, pos, neg, exe_time)
