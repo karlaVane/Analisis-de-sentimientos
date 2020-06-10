@@ -1,0 +1,93 @@
+{%extends "layout.html" %} {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">Proyecto</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Coseno/Jaccard </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Regresión <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="preg3">Librería</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!--##############################-->
+<div class="container">
+    <br>
+    <b><h2>Análisis de sentimientos con Regresión Logística</h2></b>
+    <h5>Predicción del análisis de sentimientos, teniendo como datos 1000 tweets <a href="https://github.com/karlaVane/Analisis-de-sentimientos/blob/master/Tweets.csv"><b>Ver Tweets</b></a>
+        <br> La Regresión logística utiliza:
+        <ul>
+            <li>Training el 70%</li>
+            <li>Test el 30%</li>
+        </ul>
+    </h5>
+    <hr>
+    <!-- Tabla -->
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col"> Texto</th>
+                <th scope="col">Análisis manual</th>
+                <th scope="col">Análisis Regresión</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in resultado %} {% if t[1]!=t[2]%}
+            <tr id="colorfila">
+                <td> {{t[0]}}</td>
+                <td>{{t[1]}}</td>
+                <td>{{t[2]}}</td>
+            </tr>
+            {% endif %} {% if t[1]==t[2]%}
+            <tr>
+                <td> {{t[0]}}</td>
+                <td>{{t[1]}}</td>
+                <td>{{t[2]}}</td>
+            </tr>
+            {% endif %} {% endfor%}
+        </tbody>
+    </table>
+</div>
+<hr>
+<b><h2>Porcentaje de Resultados</h2></b>
+<div class="container">
+    <table class="w3-table-all">
+        <tr class="w3-green">
+            <th scope="col">Error</th>
+            <th scope="col">Positivos</th>
+            <th scope="col">Negativos</th>
+            <th scope="col">Tiempo ejecución</th>
+        </tr>
+        <tr>
+            <td>{{error}} %</td>
+            <td>{{pos}} %</td>
+            <td>{{neg}} %</td>
+            <td>{{exe_time}} Segundos</td>
+        </tr>
+    </table>
+</div>
+<hr>
+<!--Gráficos-->
+<div class="main row">
+    <div class="col-md-6">
+        <center>
+            <b>Predicción de Análisis de sentimientos con regresión logística</b>
+            <img src="static/GR_pred.jpg" width="700" , height="350">
+        </center>
+    </div>
+    <div class="col-md-6">
+        <center>
+            <b>Análisis de sentimientos de forma manual</b>
+            <img src="static/GR_test.jpg" width="700" , height="350">
+        </center>
+    </div>
+</div>
+<hr> {% endblock %}
