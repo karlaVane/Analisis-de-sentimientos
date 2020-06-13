@@ -174,12 +174,12 @@ def resultadosPregunta2():
     # En nuevo estan los 1000 tweets con su sentimiento.
     tweet_s,sentimiento, training, test, datos, textoTrain, senTrain, textoTest, senTest = ([] for i in range(9))
     for e in range(len(nuevo)):
-        tweet_s.append(nuevo[e][0])
-        sentimiento.append(nuevo[e][1])
-    doc, vocabulario = vocabulario_1000(stopw_adic, tweet_s)
+        tweet_s.append(nuevo[e][0]) #Texto del tweet
+        sentimiento.append(nuevo[e][1]) #sentimiento
+    doc, vocabulario = vocabulario_1000(stopw_adic, tweet_s) #vocabulario del texto del tweet, doc(tweets con limpieza)
 
     for e in range(len(doc)):
-        datos.append([doc[e], sentimiento[e]])
+        datos.append([doc[e], sentimiento[e]])#tweet con steamming con su análisis
 
     posiciones_training=[]
     posiciones_test=[]
@@ -224,9 +224,6 @@ def resultadosPregunta2():
     y = np.array(senTrain)
     x_test = np.array(tf_id_test)
     y_test = np.array(senTest)
-
-    # print(x.shape)
-    # print(x_test.shape)
     algoritmo = LogisticRegression()  # Algoritmo de regresion
     # Entrana el modelo
     algoritmo.fit(x, y)  # (x,y) el trainning
@@ -251,7 +248,7 @@ def resultadosPregunta2():
     print("Tweets Positivos:{0:.3f}".format(pos), "%")
     resultado = []
     for i in range(len(y_test)):
-        resultado.append([tweet_normal[i], senTest[i], y_pred[i]])
+        resultado.append([tweet_normal[i][0], senTest[i], y_pred[i]])
     end_time = time.time()
     exe_time = round((end_time - start_time),2)
     print("Tiempo de Ejecucion: ", exe_time, "s")

@@ -23,7 +23,8 @@ cada
 diez
 uno
 mil
-quito ido
+quito 
+ido
 mjavierrod
 ivanduespin
 guaya

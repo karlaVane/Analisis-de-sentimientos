@@ -7,12 +7,16 @@ import time
 
 def analisisSentimientos(corpus):
     analisis = TextBlob(corpus)
-    if analisis.sentiment.polarity > 0:
-        return ("Positivo",1)
-    if analisis.sentiment.polarity == 0:
-        return ("Neutro",0)
-    else:
-        return ("Negativo",-1)
+    try:
+        eng=analisis.translate(to='en')
+        if eng.sentiment.polarity > 0:
+            return ("Positivo",1)
+        if analisis.sentiment.polarity == 0:
+            return ("Neutro",0)
+        else:
+            return ("Negativo",-1)
+    except: 
+        return("")
 
 def crearArchivo(nombre_archivo,sentimiento,fecha,autor,texto):
     crearArch = open("%s.csv" % nombre_archivo, "w", newline='',
