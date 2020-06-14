@@ -1,4 +1,5 @@
 Necesidad
+mata
 Tristeza
 Melancolía
 Abandono
@@ -317,6 +318,7 @@ Frialdad
 Falso
 Fraude
 Plagio 
+dano
 Peor
 Bajo 
 Mal

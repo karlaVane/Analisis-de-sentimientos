@@ -3,6 +3,11 @@ from generarTweets import generarTweet
 from pregunta1 import resultadosPregunta1
 from pregunta2 import resultadosPregunta2
 from pregunta3 import resultadoSPregunta3
+from datetime import date
+from datetime import datetime
+from datetime import timedelta
+fecha_max = date.today()##fechas
+fecha_min = fecha_max - timedelta(days=7)#fechas
 
 app= Flask(__name__)
 
@@ -15,11 +20,9 @@ def home():
         cantidadTweets=int(request.form['cant'] ) #La cantidad de tweets que se consultaran
         date_since=request.form['fechainicio']
         date_until=request.form['fechafinal']
-        ######
         datos, porcentaje_coseno, porcentaje_jaccard,ejecucion=resultadosPregunta1(consulta, cantidadTweets, date_since, date_until)
-        #####
-        return render_template('resultado.html',tweet=datos,pc=porcentaje_coseno,pj=porcentaje_jaccard,con=consulta,inicio=date_since,final=date_until,cant_tw=cantidadTweets,ejecucion=ejecucion)
-    return render_template('primer.html')
+        return render_template('resultado.html',tweet=datos,pc=porcentaje_coseno,pj=porcentaje_jaccard,con=consulta,inicio=date_since,final=date_until,cant_tw=cantidadTweets,ejecucion=ejecucion,fecha_max=fecha_max,fecha_min=fecha_min)
+    return render_template('primer.html',fecha_max=fecha_max,fecha_min=fecha_min)
 
 @app.route('/preg2',methods=['GET','POST'])
 def regresion():
@@ -36,8 +39,8 @@ def textblob():
         date_since=request.form['fechainicio']
         date_until=request.form['fechafinal']
         res_3,exe_time=resultadoSPregunta3(consulta, cantidadTweets, date_since, date_until)
-        return render_template('resultado3.html',resultado=res_3,con=consulta,inicio=date_since,final=date_until,cant_tw=cantidadTweets,exe_time=exe_time)
-    return render_template('tercera.html')
+        return render_template('resultado3.html',resultado=res_3,con=consulta,inicio=date_since,final=date_until,cant_tw=cantidadTweets,exe_time=exe_time,fecha_max=fecha_max,fecha_min=fecha_min)
+    return render_template('tercera.html',fecha_max=fecha_max,fecha_min=fecha_min)
 
 if __name__ == '__main__':
     app.run(debug=True) 

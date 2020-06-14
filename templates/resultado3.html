@@ -30,9 +30,9 @@
             <br><br>
             <li>Cantidad de Tweets: <input type="number" id="cant" name="cant" value="1" min="0" max="1000" step="1" /></li>
             <br><br>
-            <li>Desde: <input type="date" name="fechainicio" step="1" /></li>
+            <li>Desde: <input type="date" name="fechainicio" min={{fecha_min}} max={{fecha_max}} step="1" /></li>
             <br><br>
-            <li>Hasta: <input type="date" name="fechafinal" step="1" /></li>
+            <li>Hasta: <input type="date" name="fechafinal" min={{fecha_min}} max={{fecha_max}} step="1" /></li>
         </ul>
         <center>
             <button type="submit" class="btn btn-primary">Aceptar</button>
